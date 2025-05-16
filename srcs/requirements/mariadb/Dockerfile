@@ -9,4 +9,6 @@ COPY tools/init_db.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/init_db.sh
 
+EXPOSE 3306
+
 ENTRYPOINT ["/usr/local/bin/init_db.sh"]

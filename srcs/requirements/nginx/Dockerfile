@@ -16,5 +16,7 @@ RUN chown -R www-data:www-data /var/www/html
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
+EXPOSE 443
+
 CMD [ "nginx", "-g", "daemon off;" ]
 #riga 18 da rivedere

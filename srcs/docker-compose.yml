@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+      - .-requirements/nginx/conf:/etc/nginx/conf.d
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: on-failure
+  
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    container_name : wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+    enviroment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+
+      WP_USER: ${WP_USER}
+      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
+      WP_USER_EMAIL: ${WP_USER_EMAIL-}
+    depends_on:
+      - mariadb
+    networks:
+      -inception
+    restart: on-failure
+
+    mariadb:
+      build:
+        context: ./requirements/mariadb
+        dockerfile: Dockerfile
+      container_name: mariadb
+      volumes:
+        - mariadb_data:/var/lib/mysql
+      enviroment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQLUSER: ${MYSQL_USER}
+        MYSQL_PASSWORD: $[MYSQL_PASSWORD]
+      networks:
+        - inception
+      restart: on-failure
+
+      volumes:
+        mariadb_data:
+        wordpress_data:
+
+      networks:
+        inception:
+          driver: bridge
