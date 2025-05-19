@@ -21,12 +21,17 @@ build:
 	docker compose -f ./srcs/docker-compose.yml up --build -d
 	@printf "$(GREEN)Containers built$(RESET)\n"
 
+start:
+	@printf "$(GREEN)Starting containers...$(RESET)\n"
+	@docker compose -f ./srcs/docker-compose.yml start
+
 stop:
 	@printf "$(RED)Stopping containers...$(RESET)\n"
 	@docker compose -f ./srcs/docker-compose.yml stop
 
 clean: stop
-	@docker compose -f .srcs/docker-compose.yml down -v
+	@docker compose -f ./srcs/docker-compose.yml down -v
+	@sudo rm -rf $(DATA_DIR)
 
 fclean: clean
 	@docker system prune -af
