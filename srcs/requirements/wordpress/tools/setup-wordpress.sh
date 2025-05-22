@@ -4,7 +4,7 @@ set -e
 RETRY_COUNT=0
 MAX_RETRIES=30
 
-# Attendi MariaDB
+# Attende MariaDB
 echo "⏳ Aspetto MariaDB..."
 until mysqladmin ping -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" --silent; do
     sleep 1
