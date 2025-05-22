@@ -12,9 +12,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-RUN wget https://it.wordpress.org/wordpress-6.8.1-it_IT.tar.gz -P /var/www
-RUN cd /var/www && tar -xzf wordpress-6.8.1-it_IT.tar.gz && rm wordpress-6.8.1-it_IT.tar.gz
-RUN chown -R root:root /var/www/wordpress
+RUN wget https://it.wordpress.org/wordpress-6.8.1-it_IT.tar.gz -P /tmp
+RUN mkdir -p /var/www/html \
+    && tar -xzf /tmp/wordpress-6.8.1-it_IT.tar.gz -C /var/www/html --strip-components=1
+RUN chown -R www-data:www-data /var/www/html
 
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
@@ -28,4 +29,4 @@ RUN chmod +x /setup-wordpress.sh
 
 EXPOSE 9000
 
-CMD ["bash", "-c", "/setup-wordpress.sh && php-fpm7.3 -F"]
+CMD ["/setup-wordpress.sh"]
