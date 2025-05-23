@@ -23,10 +23,10 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WP_DB_HOST: ${MYSQL_HOST}
+      WP_DB_USER: ${MYSQL_USER}
+      WP_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_DB_NAME: ${MYSQL_DATABASE}
       DOMAIN_NAME: ${DOMAIN_NAME}
 
       WP_ADMIN_USER: ${WP_ADMIN_USER}
@@ -35,7 +35,7 @@ services:
 
       WP_USER: ${WP_USER}
       WP_USER_PASSWORD: ${WP_USER_PASSWORD}
-      WP_USER_EMAIL: ${WP_USER_EMAIL-}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
       MYSQL_HOST: ${MYSQL_HOST}
     depends_on:
       - mariadb
@@ -54,8 +54,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: $[MYSQL_PASSWORD]
-      MYSQL_HOST: $[MYSQL_HOST]
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - inception
     restart: always
