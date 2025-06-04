@@ -4,7 +4,7 @@ set -e
 RETRY_COUNT=0
 MAX_RETRIES=30
 
-# Attende MariaDB
+#Attende MariaDB
 echo "⏳ Aspetto MariaDB..."
 until mysqladmin ping -h"$WP_DB_HOST" -u"$WP_DB_USER" -p"$WP_DB_PASSWORD" --silent; do
     sleep 1
@@ -16,7 +16,7 @@ until mysqladmin ping -h"$WP_DB_HOST" -u"$WP_DB_USER" -p"$WP_DB_PASSWORD" --sile
 done
 echo "✅ MariaDB è attivo."
 
-# Configura WordPress
+#Configura WordPress
 if [ ! -f /var/www/html/wp-config.php ]; then
     echo "⚙️ Creo il file wp-config.php..."
     wp config create \
@@ -46,7 +46,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
         --allow-root
 fi
 
-# Avvia PHP-FPM in foreground
+#Avvia PHP-FPM in foreground
 echo "🚀 Avvio php-fpm..."
 mkdir -p /run/php
 chown www-data:www-data /run/php
